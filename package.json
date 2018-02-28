@@ -1,0 +1,24 @@
+{
+  "name": "ss-rn-toolkit",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react-native-device-info": "^0.13.0",
+    "redux-actions": "^2.2.1",
+    "react-navigation": "^1.0.0-beta.22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bestofsong/ss-rn-toolkit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bestofsong/ss-rn-toolkit/issues"
+  },
+  "homepage": "https://github.com/bestofsong/ss-rn-toolkit#readme",
+  "description": ""
+}
