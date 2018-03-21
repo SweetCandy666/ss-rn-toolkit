@@ -8,6 +8,7 @@ import { getFormatTime, getYearMonthDate } from './datetime';
 // 创建请求动作
 export const createRequestAction = base => ({
   success: createAction(`${base}_SUCCESS`),
+  request: createAction(`${base}_REQUEST`),
   failure: createAction(`${base}_FAILURE`),
   reset: createAction(`${base}_RESET`),
 });

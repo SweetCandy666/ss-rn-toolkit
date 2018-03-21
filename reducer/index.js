@@ -13,7 +13,7 @@ export const createReducer = (
   action, realAction, initialState = {}, options = {},
 ) => (
   handleActions({
-    [action]: (state, { payload }) => {
+    [realAction.request]: (state, { payload }) => {
       const ret = {
         status: 'LOADING',
         expiredTime: state.expiredTime,
