@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { handleActions } from 'redux-actions';
 
 function getIndex(payload, options) {
@@ -17,7 +18,9 @@ export const createReducer = (
       const ret = {
         status: 'LOADING',
         expiredTime: state.expiredTime,
-        data: state.data,
+        data: !options.clearData ? state.data : (
+          _.isEqual(state.requestPayload, payload.requestPayload) ? state.data : initialState),
+        requestPayload: payload.requestPayload,
         error: null,
       };
 
@@ -50,6 +53,7 @@ export const createReducer = (
         status: 'SUCCESS',
         expiredTime: payload.expiredTime,
         data,
+        requestPayload: payload.requestPayload,
         error: null,
       };
 
@@ -67,6 +71,7 @@ export const createReducer = (
         status: 'FAILURE',
         expiredTime: state.expiredTime,
         data: state.data,
+        requestPayload: payload.requestPayload,
         error: payload.error,
       };
 
