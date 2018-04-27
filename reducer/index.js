@@ -41,8 +41,11 @@ export const createReducer = (
     [realAction.success]: (state, { payload }) => {
       let { data } = payload;
       const hasNoData = data === undefined;
+      if (hasNoData) {
+        data = _.cloneDeep(initialState);
+      }
 
-      if (!hasNoData && options.replaceDataType === 'function') {
+      if (options.replaceDataType === 'function') {
         data = options.getData(state, data, payload.requestPayload);
       }
       if (data && options.updateTime) {
@@ -54,8 +57,8 @@ export const createReducer = (
 
       const ret = {
         status: 'SUCCESS',
-        expiredTime: !hasNoData ? payload.expiredTime: _.get(oldDataEntry, 'expiredTime'),
-        data: !hasNoData ? data : _.get(oldDataEntry, 'data'),
+        expiredTime: !hasNoData ? payload.expiredTime : undefined,
+        data,
         requestPayload: payload.requestPayload,
         error: null,
       };
