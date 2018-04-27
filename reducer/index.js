@@ -40,19 +40,22 @@ export const createReducer = (
 
     [realAction.success]: (state, { payload }) => {
       let { data } = payload;
+      const hasNoData = data === undefined;
 
-      if (options.replaceDataType === 'function') {
+      if (!hasNoData && options.replaceDataType === 'function') {
         data = options.getData(state, data, payload.requestPayload);
       }
-      if (options.updateTime) {
+      if (data && options.updateTime) {
         // 客户端请求接口时间
         data.updateTime = new Date().getTime();
       }
 
+      const oldDataEntry = options.isIndex ? state[getIndex(payload.requestPayload, options)] : state;
+
       const ret = {
         status: 'SUCCESS',
-        expiredTime: payload.expiredTime,
-        data,
+        expiredTime: !hasNoData ? payload.expiredTime: _.get(oldDataEntry, 'expiredTime'),
+        data: !hasNoData ? data : _.get(oldDataEntry, 'data'),
         requestPayload: payload.requestPayload,
         error: null,
       };
