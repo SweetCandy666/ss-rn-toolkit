@@ -76,10 +76,13 @@ export const createReducer = (
     },
 
     [realAction.failure]: (state, { payload }) => {
+      const { isIndex } = options;
+      const oldState = isIndex ? (state[getIndex(payload, options)] || {}) : state;
+      const oldData = oldState.data;
       const ret = {
         status: 'FAILURE',
         expiredTime: state.expiredTime,
-        data: state.data,
+        data: oldData,
         requestPayload: payload.requestPayload,
         error: payload.error,
       };
