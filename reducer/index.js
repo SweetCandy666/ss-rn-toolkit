@@ -91,7 +91,7 @@ export const createReducer = (
     },
 
     [realAction.reset]: (state, { payload }) => {
-      return payload;
+      return payload !== undefined ? payload :  { data: initialState };
     },
   }, initialState)
 );
