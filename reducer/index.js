@@ -16,7 +16,7 @@ export const createReducer = (
   handleActions({
     [realAction.request]: (state, { payload }) => {
       const { isIndex } = options;
-      const oldState = isIndex ? state[getIndex(payload, options)] : state;
+      const oldState = isIndex ? (state[getIndex(payload, options)] || {}) : state;
       const oldData = oldState.data;
       const ret = {
         status: 'LOADING',
