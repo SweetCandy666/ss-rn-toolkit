@@ -15,16 +15,19 @@ export const createReducer = (
 ) => (
   handleActions({
     [realAction.request]: (state, { payload }) => {
+      const { isIndex } = options;
+      const oldState = isIndex ? state[getIndex(payload, options)] : state;
+      const oldData = oldState.data;
       const ret = {
         status: 'LOADING',
         expiredTime: state.expiredTime,
-        data: !options.clearData ? state.data : (
-          _.isEqual(state.requestPayload, payload.requestPayload) ? state.data : initialState),
+        data: !options.clearData ? oldData : (
+          _.isEqual(state.requestPayload, payload.requestPayload) ? oldData : initialState),
         requestPayload: payload.requestPayload,
         error: null,
       };
 
-      if (options.isIndex) {
+      if (isIndex) {
         return Object.assign({}, state, {
           [getIndex(payload, options)]: ret,
         });
@@ -91,7 +94,7 @@ export const createReducer = (
     },
 
     [realAction.reset]: (state, { payload }) => {
-      return payload !== undefined ? payload :  { data: initialState };
+      return { data: payload || initialState };
     },
   }, initialState)
 );
