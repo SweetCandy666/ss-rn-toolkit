@@ -22,8 +22,8 @@ export const createReducer = (
         status: 'LOADING',
         expiredTime: state.expiredTime,
         data: !options.clearData ? oldData : (
-          _.isEqual(state.requestPayload, payload.requestPayload) ? oldData : initialState),
-        requestPayload: payload.requestPayload,
+          _.isEqual(state.requestPayload, payload) ? oldData : initialState),
+        requestPayload: payload,
         error: null,
       };
 
@@ -77,7 +77,7 @@ export const createReducer = (
 
     [realAction.failure]: (state, { payload }) => {
       const { isIndex } = options;
-      const oldState = isIndex ? (state[getIndex(payload, options)] || {}) : state;
+      const oldState = isIndex ? (state[getIndex(payload.requestPayload, options)] || {}) : state;
       const oldData = oldState.data;
       const ret = {
         status: 'FAILURE',
@@ -97,7 +97,16 @@ export const createReducer = (
     },
 
     [realAction.reset]: (state, { payload }) => {
-      return { data: payload || initialState };
+      const resetEntry = { data: initialState };
+      const { isIndex } = options;
+
+      if (isIndex) {
+        return Object.assign({}, state, {
+          [getIndex(payload, options)]: resetEntry,
+        });
+      }
+
+      return resetEntry;
     },
   }, initialState)
 );
