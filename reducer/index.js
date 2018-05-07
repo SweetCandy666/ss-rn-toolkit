@@ -96,7 +96,7 @@ export const createReducer = (
       return ret;
     },
 
-    [realAction.reset]: (state, { payload }) => {
+    [realAction.reset]: (state, { payload = {} }) => {
       const resetEntry = { data: initialState };
       const { isIndex } = options;
 
