@@ -20,22 +20,22 @@ export const createReducer = (
       const oldData = oldState.data;
       const ret = {
         status: 'LOADING',
-        expiredTime: state.expiredTime,
+        expiredTime: oldState.expiredTime,
         data: !options.clearData ? oldData : (
-          _.isEqual(state.requestPayload, payload) ? oldData : initialState),
+          _.isEqual(oldState.requestPayload, payload) ? oldData : initialState),
         requestPayload: payload,
         error: null,
       };
+
+      // no loading
+      if (options.isUpdate && oldState.status === 'SUCCESS') {
+        return state;
+      }
 
       if (isIndex) {
         return Object.assign({}, state, {
           [getIndex(payload, options)]: ret,
         });
-      }
-
-      // no loading
-      if (options.isUpdate && state.status === 'SUCCESS') {
-        return state;
       }
 
       return ret;
@@ -48,15 +48,16 @@ export const createReducer = (
         data = _.cloneDeep(initialState);
       }
 
+      const oldDataEntry = options.isIndex ? state[getIndex(payload.requestPayload, options)] : state;
+
       if (options.replaceDataType === 'function') {
-        data = options.getData(state, data, payload.requestPayload);
+        data = options.getData(oldDataEntry, data, payload.requestPayload);
       }
       if (data && options.updateTime) {
         // 客户端请求接口时间
         data.updateTime = new Date().getTime();
       }
 
-      const oldDataEntry = options.isIndex ? state[getIndex(payload.requestPayload, options)] : state;
 
       const ret = {
         status: 'SUCCESS',
@@ -81,7 +82,7 @@ export const createReducer = (
       const oldData = oldState.data;
       const ret = {
         status: 'FAILURE',
-        expiredTime: state.expiredTime,
+        expiredTime: oldState.expiredTime,
         data: oldData,
         requestPayload: payload.requestPayload,
         error: payload.error,
