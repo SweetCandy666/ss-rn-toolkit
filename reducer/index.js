@@ -102,6 +102,9 @@ export const createReducer = (
       const { isIndex } = options;
 
       if (isIndex) {
+        if (_.isEmpty(payload)) {
+          return {};
+        }
         return Object.assign({}, state, {
           [getIndex(payload, options)]: resetEntry,
         });
