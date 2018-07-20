@@ -17,10 +17,10 @@ const addChildren = (extraChildren, prepend = true) => wrapped => class extends 
   }
 };
 
-export const withLightStatusBar = addChildren(<StatusBar barStyle="light-content" backgroundColor="black" />);
-export const withDarkStatusBar = addChildren(<StatusBar barStyle="dark-content" backgroundColor="black" />);
-export const withLightThemeColorStatusBar = addChildren(<StatusBar barStyle="light-content" backgroundColor="#3399ff" />);
+export const withLightStatusBar = addChildren(<StatusBar translucent={false} barStyle="light-content" backgroundColor="black" />);
+export const withDarkStatusBar = addChildren(<StatusBar translucent={false} barStyle="dark-content" backgroundColor="black" />);
+export const withLightThemeColorStatusBar = addChildren(<StatusBar translucent={false} barStyle="light-content" backgroundColor="#3399ff" />);
 
-export function getThemeColorStatusBar(barStyle, backgroundColor) {
-  return addChildren(<StatusBar barStyle={barStyle} backgroundColor={backgroundColor} />);
+export function getThemeColorStatusBar(barStyle, translucent, backgroundColor) {
+  return addChildren(<StatusBar barStyle={barStyle} translucent={translucent} backgroundColor={backgroundColor} />);
 }
